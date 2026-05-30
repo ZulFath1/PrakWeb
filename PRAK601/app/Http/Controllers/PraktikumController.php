@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Praktikum;
+use App\Models\Profil;
+use App\Models\Pengalaman;
 
 class PraktikumController extends Controller
 {
@@ -10,7 +11,7 @@ class PraktikumController extends Controller
     {
         return view('pages.beranda', [
             'title'  => 'Beranda | Praktikum Modul 6',
-            'profil' => Praktikum::getProfil()
+            'profil' => Profil::first()
         ]);
     }
 
@@ -18,24 +19,18 @@ class PraktikumController extends Controller
     {
         return view('pages.profil', [
             'title'      => 'Profil Praktikan',
-            'profil'     => Praktikum::getProfil(),
-            'pengalaman' => Praktikum::getPengalaman(),
-            'gambar' => asset('images/pfp.jpeg'),
+            'profil'     => Profil::first(),
+            'pengalaman' => Pengalaman::all()
         ]);
     }
 
     public function detail($id)
     {
-        $detail = Praktikum::getPengalamanById($id);
-
-        if (!$detail) {
-            abort(404, 'Data pengalaman tidak ditemukan.');
-        }
+        $detail = Pengalaman::findOrFail($id);
 
         return view('pages.detail', [
             'title'  => 'Detail Pengalaman',
             'detail' => $detail
         ]);
     }
-    
 }
